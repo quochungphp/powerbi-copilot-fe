@@ -6,7 +6,7 @@ import { useState } from "react";
 import type { DataSourceConnectInput, DataSourceConnectResponse, DatabaseKind } from "@/lib/types";
 
 const defaults: Record<DatabaseKind, Pick<DataSourceConnectInput, "kind" | "port" | "use_ssl">> = {
-  postgresql: { kind: "postgresql", port: 5432, use_ssl: true },
+  postgresql: { kind: "postgresql", port: 5432, use_ssl: false },
   mysql: { kind: "mysql", port: 3306, use_ssl: true },
 };
 
@@ -20,11 +20,12 @@ export function DataSourceForm({
   const [kind, setKind] = useState<DatabaseKind>("postgresql");
   const [form, setForm] = useState<DataSourceConnectInput>({
     ...defaults.postgresql,
-    host: "",
-    database: "",
-    username: "",
-    password: "",
-    schema_name: "",
+    // Docker demo defaults: the backend container can resolve this service name.
+    host: "demo-postgres",
+    database: "powerbi_demo",
+    username: "powerbi",
+    password: "powerbi_demo_password",
+    schema_name: "public",
   });
   const [error, setError] = useState<string | null>(null);
 
